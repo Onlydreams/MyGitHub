@@ -56,7 +56,7 @@ void mergeSort(double *data, int low, int high)
 }
 
 //≤Â»Î≈≈–Ú
-void InsertionSort(double A[],int n)
+void insertionSort(double A[],int n)
 {
 	int i,j;
 	double key;
@@ -78,38 +78,38 @@ void InsertionSort(double A[],int n)
 
 int main()
 {
-	double rand_num1[SMALL];
-	double rand_num2[MID];
-	double rand_num3[BIG];
-	double rand_num4[HUGE];
+	double rand_small[SMALL];
+	double rand_mid[MID];
+	double rand_big[BIG];
+	double rand_huge[HUGE];
 	srand((unsigned)time(0));
 	
 	for(int i=0;i<SMALL;i++)
 	{  
-		rand_num1[i]=rand() / double(RAND_MAX); 
+		rand_small[i]=rand() / double(RAND_MAX); 
 	}
 	for(int i=0;i<MID;i++)
 	{  
-		rand_num2[i]=rand() / double(RAND_MAX); 
+		rand_mid[i]=rand() / double(RAND_MAX); 
 	}
 	for(int i=0;i<BIG;i++)
 	{  
-		rand_num3[i]=rand() / double(RAND_MAX); 
+		rand_big[i]=rand() / double(RAND_MAX); 
 	}
 	for(int i=0;i<HUGE;i++)
 	{  
-		rand_num4[i]=rand() / double(RAND_MAX); 
+		rand_huge[i]=rand() / double(RAND_MAX); 
 	}
 	
 	clock_t  clockBegin_merge, clockEnd_merge;
 	clockBegin_merge = clock();
-	mergeSort(rand_num4, 0, HUGE-1);
+	mergeSort(rand_huge, 0, HUGE-1);
 	clockEnd_merge = clock();
 	printf("%d\n", clockEnd_merge - clockBegin_merge);
 	
 	clock_t clockBegin_insertion, clockEnd_insertion;
 	clockBegin_insertion = clock();
-	InsertionSort(rand_num4, HUGE);
+	insertionSort(rand_huge, HUGE);
 	clockEnd_insertion = clock();
 	printf("%d\n", clockEnd_insertion - clockBegin_insertion);
 
