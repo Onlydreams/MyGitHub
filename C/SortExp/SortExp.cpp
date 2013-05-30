@@ -11,8 +11,16 @@ using namespace std;
 #define BIG 10000
 #define HUGE 100000
 
+//辅助交换函数
+void swap(double *a, double *b)
+{
+	double t;
+	t = *a;
+	*a = *b;
+	*b = t;
+}
 //归并排序
-void merge(double A[], int low, int mid, int high)
+void merge(double A[], int low, int mid, int high)//归并操作
 {
 	int n1, n2, i, j, k;
     double *left=NULL, *right=NULL;
@@ -22,14 +30,14 @@ void merge(double A[], int low, int mid, int high)
  
     left = (double *)malloc(sizeof(double)*(n1)); 
     right = (double *)malloc(sizeof(double)*(n2));
-    for(i=0; i<n1; i++)  //对左数组赋值
+    for(i=0; i<n1; i++) 
 		left[i] = A[low+i];
-    for(j=0; j<n2; j++)  //对右数组赋值
+    for(j=0; j<n2; j++)  
 		right[j] = A[mid+1+j];
  
     i = j = 0; 
 	k = low;
-    while(i<n1 && j<n2) //将数组元素值两两比较，并合并到数组A
+    while(i<n1 && j<n2) 
     {
 		if(left[i] <= right[j])
 			A[k++] = left[i++];
@@ -37,21 +45,21 @@ void merge(double A[], int low, int mid, int high)
 			A[k++] = right[j++];
     }
  
-    for(; i<n1; i++) //如果左数组有元素剩余，则将剩余元素合并到数组A
+    for(; i<n1; i++) 
 		A[k++] = left[i];
-    for(; j<n2; j++) //如果右数组有元素剩余，则将剩余元素合并到数组A
+    for(; j<n2; j++) 
 		A[k++] = right[j];
 }
  
-void mergeSort(double A[], int low, int high)
+void MergeSort(double A[], int low, int high)
 {
     int mid;
-    if(low < high) //只有一个或无记录时不须排序 
+    if(low < high)
     {
-		mid = (int)((low+high)/2);      //将数组A分成两半   
-		mergeSort(A, low, mid);   //递归拆分左数组
-		mergeSort(A, mid+1, high); //递归拆分右数组
-		merge(A, low, mid, high);    //合并数组
+		mid = (int)((low+high)/2);        
+		MergeSort(A, low, mid);  
+		MergeSort(A, mid+1, high);
+		merge(A, low, mid, high);
     }
 }
 
@@ -74,7 +82,7 @@ void InsertionSort(double A[],int n)
 }
 
 //希尔排序
-void shellSort(double A[], int n)
+void ShellSort(double A[], int n)
 {
 	int d;
 	double temp;
@@ -83,15 +91,38 @@ void shellSort(double A[], int n)
 		for(int i = d; i<n; i++)
 		{
 			for(int j=i-d; i-d>0 && A[j]<A[j-d]; j-=d)
-			{
-				temp = A[j];
-				A[j] = A[j-d];
-				A[j-d] = temp;
-			}
+				swap(&A[j], &A[j-d]);
 		}
 	}
 }
 
+//快速排序
+int Partition(double A[], int p, int q)//划分操作
+{
+	int i,j;
+	double povit;
+	povit = A[p];//以第一个元素为枢轴
+	i = p;
+	for(j = p+1;j <= q;j++)
+	{
+		if(povit >= A[j])
+		{
+			i = i + 1;
+			swap(&A[i],&A[j]);
+		}
+	}
+	swap(&A[p],&A[i]);
+	return i;
+}
+void QuickSort(double A[], int p, int q)
+{
+	if(p < q)
+	{
+		int r = Partition(A, p, q);
+		QuickSort(A, p, r-1);
+		QuickSort(A, r+1, q);
+	}
+}
 int main()
 {
 	double rand_num1[SMALL];
@@ -119,7 +150,7 @@ int main()
 	
 	clock_t  clockBegin_merge, clockEnd_merge;
 	clockBegin_merge = clock();
-	mergeSort(rand_num4, 0, HUGE-1);
+	MergeSort(rand_num4, 0, HUGE-1);
 	clockEnd_merge = clock();
 	printf("%d\n", clockEnd_merge - clockBegin_merge);
 	
@@ -129,8 +160,11 @@ int main()
 	clockEnd_insertion = clock();
 	printf("%d\n", clockEnd_insertion - clockBegin_insertion);
 
-	shellSort(rand_num1, SMALL);
+	ShellSort(rand_num1, SMALL);
 	for(int i=0; i<SMALL; ++i)    
-        cout<<rand_num1[i]<<" ";
+        cout<<rand_num1[i]<<" "<<endl;
+	QuickSort(rand_num2, 0, MID-1);
+	for(int i=0; i<MID; ++i)    
+        cout<<rand_num2[i]<<" "<<endl;
 
 }
