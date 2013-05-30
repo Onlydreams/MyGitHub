@@ -12,7 +12,7 @@ using namespace std;
 #define HUGE 100000
 
 //归并排序
-void merge(double *data, int low, int mid, int high)
+void merge(double A[], int low, int mid, int high)
 {
 	int n1, n2, i, j, k;
     double *left=NULL, *right=NULL;
@@ -23,40 +23,40 @@ void merge(double *data, int low, int mid, int high)
     left = (double *)malloc(sizeof(double)*(n1)); 
     right = (double *)malloc(sizeof(double)*(n2));
     for(i=0; i<n1; i++)  //对左数组赋值
-		left[i] = data[low+i];
+		left[i] = A[low+i];
     for(j=0; j<n2; j++)  //对右数组赋值
-		right[j] = data[mid+1+j];
+		right[j] = A[mid+1+j];
  
     i = j = 0; 
 	k = low;
-    while(i<n1 && j<n2) //将数组元素值两两比较，并合并到data数组
+    while(i<n1 && j<n2) //将数组元素值两两比较，并合并到数组A
     {
 		if(left[i] <= right[j])
-			data[k++] = left[i++];
+			A[k++] = left[i++];
 		else
-			data[k++] = right[j++];
+			A[k++] = right[j++];
     }
  
-    for(; i<n1; i++) //如果左数组有元素剩余，则将剩余元素合并到data数组
-		data[k++] = left[i];
-    for(; j<n2; j++) //如果右数组有元素剩余，则将剩余元素合并到data数组
-		data[k++] = right[j];
+    for(; i<n1; i++) //如果左数组有元素剩余，则将剩余元素合并到数组A
+		A[k++] = left[i];
+    for(; j<n2; j++) //如果右数组有元素剩余，则将剩余元素合并到数组A
+		A[k++] = right[j];
 }
  
-void mergeSort(double *data, int low, int high)
+void mergeSort(double A[], int low, int high)
 {
     int mid;
     if(low < high) //只有一个或无记录时不须排序 
     {
-		mid = (int)((low+high)/2);      //将data数组分成两半   
-		mergeSort(data, low, mid);   //递归拆分左数组
-		mergeSort(data, mid+1, high); //递归拆分右数组
-		merge(data, low, mid, high);    //合并数组
+		mid = (int)((low+high)/2);      //将数组A分成两半   
+		mergeSort(A, low, mid);   //递归拆分左数组
+		mergeSort(A, mid+1, high); //递归拆分右数组
+		merge(A, low, mid, high);    //合并数组
     }
 }
 
 //插入排序
-void insertionSort(double A[],int n)
+void InsertionSort(double A[],int n)
 {
 	int i,j;
 	double key;
@@ -64,7 +64,7 @@ void insertionSort(double A[],int n)
 	{
 		key = A[j];
 		i = j -1;
-		while(i>=0 && key<A[i])
+		while(i>=0 && key<A[i])//找到插入位置，将后面的依次后移
 		{
 			A[i+1] = A[i];
 			i = i-1;
@@ -74,43 +74,63 @@ void insertionSort(double A[],int n)
 }
 
 //希尔排序
-
+void shellSort(double A[], int n)
+{
+	int d;
+	double temp;
+	for(d=n/2; d>0; d/=2)//以数组长度一半为起始步长
+	{
+		for(int i = d; i<n; i++)
+		{
+			for(int j=i-d; i-d>0 && A[j]<A[j-d]; j-=d)
+			{
+				temp = A[j];
+				A[j] = A[j-d];
+				A[j-d] = temp;
+			}
+		}
+	}
+}
 
 int main()
 {
-	double rand_small[SMALL];
-	double rand_mid[MID];
-	double rand_big[BIG];
-	double rand_huge[HUGE];
+	double rand_num1[SMALL];
+	double rand_num2[MID];
+	double rand_num3[BIG];
+	double rand_num4[HUGE];
 	srand((unsigned)time(0));
-	
+	//用随机数初始化数组
 	for(int i=0;i<SMALL;i++)
 	{  
-		rand_small[i]=rand() / double(RAND_MAX); 
+		rand_num1[i]=rand() / double(RAND_MAX); 
 	}
 	for(int i=0;i<MID;i++)
 	{  
-		rand_mid[i]=rand() / double(RAND_MAX); 
+		rand_num2[i]=rand() / double(RAND_MAX); 
 	}
 	for(int i=0;i<BIG;i++)
 	{  
-		rand_big[i]=rand() / double(RAND_MAX); 
+		rand_num3[i]=rand() / double(RAND_MAX); 
 	}
 	for(int i=0;i<HUGE;i++)
 	{  
-		rand_huge[i]=rand() / double(RAND_MAX); 
+		rand_num4[i]=rand() / double(RAND_MAX); 
 	}
 	
 	clock_t  clockBegin_merge, clockEnd_merge;
 	clockBegin_merge = clock();
-	mergeSort(rand_huge, 0, HUGE-1);
+	mergeSort(rand_num4, 0, HUGE-1);
 	clockEnd_merge = clock();
 	printf("%d\n", clockEnd_merge - clockBegin_merge);
 	
 	clock_t clockBegin_insertion, clockEnd_insertion;
 	clockBegin_insertion = clock();
-	insertionSort(rand_huge, HUGE);
+	InsertionSort(rand_num3, BIG);
 	clockEnd_insertion = clock();
 	printf("%d\n", clockEnd_insertion - clockBegin_insertion);
+
+	shellSort(rand_num1, SMALL);
+	for(int i=0; i<SMALL; ++i)    
+        cout<<rand_num1[i]<<" ";
 
 }
