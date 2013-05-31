@@ -12,13 +12,14 @@ using namespace std;
 #define HUGE 100000
 
 //辅助交换函数
-void swap(double *a, double *b)
+void swap(double &a, double &b)
 {
 	double t;
-	t = *a;
-	*a = *b;
-	*b = t;
+	t = a;
+	a = b;
+	b = t;
 }
+
 //归并排序
 void merge(double A[], int low, int mid, int high)//归并操作
 {
@@ -91,7 +92,7 @@ void ShellSort(double A[], int n)
 		for(int i = d; i<n; i++)
 		{
 			for(int j=i-d; i-d>0 && A[j]<A[j-d]; j-=d)
-				swap(&A[j], &A[j-d]);
+				swap(A[j], A[j-d]);
 		}
 	}
 }
@@ -108,10 +109,10 @@ int Partition(double A[], int p, int q)//划分操作
 		if(povit >= A[j])
 		{
 			i = i + 1;
-			swap(&A[i],&A[j]);
+			swap(A[i],A[j]);
 		}
 	}
-	swap(&A[p],&A[i]);
+	swap(A[p],A[i]);
 	return i;
 }
 void QuickSort(double A[], int p, int q)
@@ -123,6 +124,27 @@ void QuickSort(double A[], int p, int q)
 		QuickSort(A, r+1, q);
 	}
 }
+
+//冒泡排序
+void BubbleSort(double A[], int n)
+{
+	int i, j;
+	int flag = 0;//使用标志位减少比较次数
+	for(i=0; i<n; i++)
+	{
+		for(j=1; j<n-i; j++)
+		{
+			if(A[j] < A[j-1])
+			{
+				swap(A[j], A[j-1]);
+				flag = 1;
+			}
+		}
+		if(flag == 0)
+				break;
+	}
+}
+
 int main()
 {
 	double rand_num1[SMALL];
