@@ -86,13 +86,12 @@ void InsertionSort(double A[],int n)
 void ShellSort(double A[], int n)
 {
 	int d;
-	double temp;
 	for(d=n/2; d>0; d/=2)//以数组长度一半为起始步长
 	{
 		for(int i = d; i<n; i++)
 		{
-			for(int j=i-d; i-d>0 && A[j]<A[j-d]; j-=d)
-				swap(A[j], A[j-d]);
+			for(int j=i-d; j>=0 && A[j]>A[j+d]; j-=d)
+				swap(A[j], A[j+d]);
 		}
 	}
 }
@@ -145,48 +144,230 @@ void BubbleSort(double A[], int n)
 	}
 }
 
+//桶排序
+typedef struct node{//辅助链表节点结构
+	double data;
+	struct node *next;
+}node;
+
+
+
+void bucket_insert(struct node *des, struct node *ins)//定义桶内链表节点插入操作
+{
+	struct node* p = des;
+	struct node* q = des;
+	if(!p->next)
+		p->next = ins;
+	else 
+	{
+		p = p->next;
+		while(p && p->data<=ins->data)
+		{
+			p = p->next;
+			q = q->next;
+		}
+		if(!p)
+			q->next = ins;
+		else
+		{
+			q->next = ins;
+			ins->next = p;
+		}
+	}
+}
+
+void BucketSort(double A[], int n)
+{
+	node *B = new node[n];
+	for(int k=0; k<n; k++)
+		B[k].next = NULL;
+	int i,j;
+	int s = 0;
+	for(i=0; i<n; i++)
+	{
+		j = A[i] * n;
+		node *p = (struct node*)malloc(sizeof(node));
+		p->next = NULL;
+		p->data = A[i];
+		bucket_insert(&B[j], p);
+	}
+
+	for(i=0;i<n;i++)
+	{	
+		node *t;
+		t = &B[i];
+		while(t->next)
+			{  
+				t = t->next;
+				A[s] = t->data;
+				s++;
+			}
+	}
+}
+
 int main()
 {
-	double rand_num1[SMALL];
-	double rand_num2[MID];
-	double rand_num3[BIG];
-	double rand_num4[HUGE];
+	double *small_rand = new double[SMALL];
+	double *s1 = new double[SMALL];
+	double *s2 = new double[SMALL];
+	double *s3 = new double[SMALL];
+	double *s4 = new double[SMALL];
+	double *s5 = new double[SMALL];
+	double *s6 = new double[SMALL];
+
+	double *mid_rand = new double[MID];
+	double *m1 = new double[MID];
+	double *m2 = new double[MID];
+	double *m3 = new double[MID];
+	double *m4 = new double[MID];
+	double *m5 = new double[MID];
+	double *m6 = new double[MID];
+
+	double *big_rand = new double[BIG];
+	double *b1 = new double[BIG];
+	double *b2 = new double[BIG];
+	double *b3 = new double[BIG];
+	double *b4 = new double[BIG];
+	double *b5 = new double[BIG];
+	double *b6 = new double[BIG];
+
+	double *huge_rand = new double[HUGE];
+	double *h1 = new double[HUGE];
+	double *h2 = new double[HUGE];
+	double *h3 = new double[HUGE];
+	double *h4 = new double[HUGE];
+	double *h5 = new double[HUGE];
+	double *h6 = new double[HUGE];
+	
 	srand((unsigned)time(0));
 	//用随机数初始化数组
 	for(int i=0;i<SMALL;i++)
 	{  
-		rand_num1[i]=rand() / double(RAND_MAX); 
+		small_rand[i] = rand() / double(RAND_MAX);
+		s1[i] = small_rand[i];
+		s2[i] = small_rand[i];
+		s3[i] = small_rand[i];
+		s4[i] = small_rand[i];
+		s5[i] = small_rand[i];
+		s6[i] = small_rand[i];
 	}
 	for(int i=0;i<MID;i++)
 	{  
-		rand_num2[i]=rand() / double(RAND_MAX); 
+		mid_rand[i] = rand() / double(RAND_MAX);
+		m1[i] = mid_rand[i];
+		m2[i] = mid_rand[i];
+		m3[i] = mid_rand[i];
+		m4[i] = mid_rand[i];
+		m5[i] = mid_rand[i];
+		m6[i] = mid_rand[i];
 	}
 	for(int i=0;i<BIG;i++)
 	{  
-		rand_num3[i]=rand() / double(RAND_MAX); 
+		big_rand[i] = rand() / double(RAND_MAX);
+		b1[i] = big_rand[i];
+		b2[i] = big_rand[i];
+		b3[i] = big_rand[i];
+		b4[i] = big_rand[i];
+		b5[i] = big_rand[i];
+		b6[i] = big_rand[i];
 	}
 	for(int i=0;i<HUGE;i++)
 	{  
-		rand_num4[i]=rand() / double(RAND_MAX); 
+		huge_rand[i] = rand() / double(RAND_MAX);
+		h1[i] = huge_rand[i];
+		h2[i] = huge_rand[i];
+		h3[i] = huge_rand[i];
+		h4[i] = huge_rand[i];
+		h5[i] = huge_rand[i];
+		h6[i] = huge_rand[i];
 	}
-	
-	clock_t  clockBegin_merge, clockEnd_merge;
-	clockBegin_merge = clock();
-	MergeSort(rand_num4, 0, HUGE-1);
-	clockEnd_merge = clock();
-	printf("%d\n", clockEnd_merge - clockBegin_merge);
-	
-	clock_t clockBegin_insertion, clockEnd_insertion;
-	clockBegin_insertion = clock();
-	InsertionSort(rand_num3, BIG);
-	clockEnd_insertion = clock();
-	printf("%d\n", clockEnd_insertion - clockBegin_insertion);
 
-	ShellSort(rand_num1, SMALL);
-	for(int i=0; i<SMALL; ++i)    
-        cout<<rand_num1[i]<<" "<<endl;
-	QuickSort(rand_num2, 0, MID-1);
-	for(int i=0; i<MID; ++i)    
-        cout<<rand_num2[i]<<" "<<endl;
+	//(1)n=10时排序结果
+	for(int i=0; i<SMALL; i++)
+	{
+		cout<<small_rand[i]<<" ";
+	}
+	cout<<endl;
+	MergeSort(s1, 0, SMALL - 1);
+	for(int i=0; i<SMALL; i++)
+	{
+		cout<<s1[i]<<" ";
+	}
+	cout<<endl;
+	InsertionSort(s2, SMALL);
+	for(int i=0; i<SMALL; i++)
+	{
+		cout<<s2[i]<<" ";
+	}
+	cout<<endl;
+	ShellSort(s3, SMALL);
+	for(int i=0; i<SMALL; i++)
+	{
+		cout<<s3[i]<<" ";
+	}
+	cout<<endl;
+	QuickSort(s4, 0, SMALL - 1);
+	for(int i=0; i<SMALL; i++)
+	{
+		cout<<s4[i]<<" ";
+	}
+	cout<<endl;
+	BubbleSort(s5, SMALL);
+	for(int i=0; i<SMALL; i++)
+	{
+		cout<<s5[i]<<" ";
+	}
+	cout<<endl;
+	BucketSort(s6, SMALL);
+	for(int i=0; i<SMALL; i++)
+	{
+		cout<<s6[i]<<" ";
+	}
+	cout<<endl;
 
+	clock_t  clockBegin_bucket, clockEnd_bucket;
+	clockBegin_bucket = clock();
+	BucketSort(h4, HUGE);
+	clockEnd_bucket = clock();
+	cout<<(clockEnd_bucket - clockBegin_bucket)*1000 / CLOCKS_PER_SEC<<"ms"<<endl;
+	clock_t  clockBegin_shell, clockEnd_shell;
+	clockBegin_shell = clock();
+	ShellSort(h5, HUGE);
+	clockEnd_shell = clock();
+	cout<<(clockEnd_shell - clockBegin_shell)*1000 / CLOCKS_PER_SEC<<"ms"<<endl;
+	
+
+	delete []small_rand;
+	delete []s1;
+	delete []s2;
+	delete []s3;
+	delete []s4;
+	delete []s5;
+	delete []s6;
+
+	delete []mid_rand;
+	delete []m1;
+	delete []m2;
+	delete []m3;
+	delete []m4;
+	delete []m5;
+	delete []m6;
+
+	delete []big_rand;
+	delete []b1;
+	delete []b2;
+	delete []b3;
+	delete []b4;
+	delete []b5;
+	delete []b6;
+
+	delete []huge_rand;
+	delete []h1;
+	delete []h2;
+	delete []h3;
+	delete []h4;
+	delete []h5;
+	delete []h6;
+
+	return 0;
 }
