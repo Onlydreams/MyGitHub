@@ -283,58 +283,173 @@ int main()
 	}
 
 	//(1)n=10时排序结果
+	cout<<"原始数组为：";
 	for(int i=0; i<SMALL; i++)
 	{
 		cout<<small_rand[i]<<" ";
 	}
 	cout<<endl;
+	cout<<"归并排序后的结果：";
 	MergeSort(s1, 0, SMALL - 1);
 	for(int i=0; i<SMALL; i++)
 	{
 		cout<<s1[i]<<" ";
 	}
 	cout<<endl;
+	cout<<"插入排序后的结果：";
 	InsertionSort(s2, SMALL);
 	for(int i=0; i<SMALL; i++)
 	{
 		cout<<s2[i]<<" ";
 	}
 	cout<<endl;
+	cout<<"希尔排序后的结果：";
 	ShellSort(s3, SMALL);
 	for(int i=0; i<SMALL; i++)
 	{
 		cout<<s3[i]<<" ";
 	}
 	cout<<endl;
+	cout<<"快速排序后的结果：";
 	QuickSort(s4, 0, SMALL - 1);
 	for(int i=0; i<SMALL; i++)
 	{
 		cout<<s4[i]<<" ";
 	}
 	cout<<endl;
+	cout<<"冒泡排序后的结果：";
 	BubbleSort(s5, SMALL);
 	for(int i=0; i<SMALL; i++)
 	{
 		cout<<s5[i]<<" ";
 	}
 	cout<<endl;
+	cout<<"桶排序后的结果：";
 	BucketSort(s6, SMALL);
 	for(int i=0; i<SMALL; i++)
 	{
 		cout<<s6[i]<<" ";
 	}
 	cout<<endl;
+	//(2)n=1000,10000,100000时，对同一个样本实例，不同排序完成所需时间
 
-	clock_t  clockBegin_bucket, clockEnd_bucket;
-	clockBegin_bucket = clock();
-	BucketSort(h4, HUGE);
-	clockEnd_bucket = clock();
-	cout<<(clockEnd_bucket - clockBegin_bucket)*1000 / CLOCKS_PER_SEC<<"ms"<<endl;
-	clock_t  clockBegin_shell, clockEnd_shell;
-	clockBegin_shell = clock();
-	ShellSort(h5, HUGE);
-	clockEnd_shell = clock();
-	cout<<(clockEnd_shell - clockBegin_shell)*1000 / CLOCKS_PER_SEC<<"ms"<<endl;
+	//n=1000时
+	cout<<"样本大小为1000时："<<endl;
+
+	clock_t  clockBegin_merge1, clockEnd_merge1;
+	clockBegin_merge1 = clock();
+	MergeSort(m1, 0, MID-1);
+	clockEnd_merge1 = clock();
+	cout<<"归并排序所用时间为"<<(clockEnd_merge1 - clockBegin_merge1)<<"ms"<<endl;
+
+	clock_t  clockBegin_insert1, clockEnd_insert1;
+	clockBegin_insert1 = clock();
+	InsertionSort(m2, MID);
+	clockEnd_insert1 = clock();
+	cout<<"插入排序所用时间为"<<(clockEnd_insert1 - clockBegin_insert1)<<"ms"<<endl;
+
+	clock_t  clockBegin_shell1, clockEnd_shell1;
+	clockBegin_shell1 = clock();
+	ShellSort(m3, MID);
+	clockEnd_shell1 = clock();
+	cout<<"希尔排序所用时间为"<<(clockEnd_shell1 - clockBegin_shell1)<<"ms"<<endl;
+
+	clock_t  clockBegin_quick1, clockEnd_quick1;
+	clockBegin_quick1 = clock();
+	QuickSort(m4, 0, MID-1);
+	clockEnd_quick1 = clock();
+	cout<<"快速排序所用时间为"<<(clockEnd_quick1 - clockBegin_quick1)<<"ms"<<endl;
+
+	clock_t  clockBegin_bubble1, clockEnd_bubble1;
+	clockBegin_bubble1 = clock();
+	BubbleSort(m5, MID);
+	clockEnd_bubble1 = clock();
+	cout<<"冒泡排序所用时间为"<<(clockEnd_bubble1 - clockBegin_bubble1)<<"ms"<<endl;
+
+	clock_t  clockBegin_bucket1, clockEnd_bucket1;
+	clockBegin_bucket1 = clock();
+	BucketSort(m6, MID);
+	clockEnd_bucket1 = clock();
+	cout<<"桶排序所用时间为"<<(clockEnd_bucket1 - clockBegin_bucket1)<<"ms"<<endl;
+
+	//n=10000时
+	cout<<"样本大小为10000时："<<endl;
+
+	clock_t  clockBegin_merge2, clockEnd_merge2;
+	clockBegin_merge2 = clock();
+	MergeSort(b1, 0, BIG-1);
+	clockEnd_merge2 = clock();
+	cout<<"归并排序所用时间为"<<(clockEnd_merge2 - clockBegin_merge2)<<"ms"<<endl;
+
+	clock_t  clockBegin_insert2, clockEnd_insert2;
+	clockBegin_insert2 = clock();
+	InsertionSort(b2, BIG);
+	clockEnd_insert2 = clock();
+	cout<<"插入排序所用时间为"<<(clockEnd_insert2 - clockBegin_insert2)<<"ms"<<endl;
+
+	clock_t  clockBegin_shell2, clockEnd_shell2;
+	clockBegin_shell2 = clock();
+	ShellSort(b3, BIG);
+	clockEnd_shell2 = clock();
+	cout<<"希尔排序所用时间为"<<(clockEnd_shell2 - clockBegin_shell2)<<"ms"<<endl;
+
+	clock_t  clockBegin_quick2, clockEnd_quick2;
+	clockBegin_quick2 = clock();
+	QuickSort(b4, 0, BIG-1);
+	clockEnd_quick2 = clock();
+	cout<<"快速排序所用时间为"<<(clockEnd_quick2 - clockBegin_quick2)<<"ms"<<endl;
+
+	clock_t  clockBegin_bubble2, clockEnd_bubble2;
+	clockBegin_bubble2 = clock();
+	BubbleSort(b5, BIG);
+	clockEnd_bubble2 = clock();
+	cout<<"冒泡排序所用时间为"<<(clockEnd_bubble2 - clockBegin_bubble2)<<"ms"<<endl;
+
+	clock_t  clockBegin_bucket2, clockEnd_bucket2;
+	clockBegin_bucket2 = clock();
+	BucketSort(b6, BIG);
+	clockEnd_bucket2 = clock();
+	cout<<"桶排序所用时间为"<<(clockEnd_bucket2 - clockBegin_bucket2)<<"ms"<<endl;
+
+	//n=10000时
+	cout<<"样本大小为100000时："<<endl;
+
+	clock_t  clockBegin_merge3, clockEnd_merge3;
+	clockBegin_merge3 = clock();
+	MergeSort(h1, 0, HUGE-1);
+	clockEnd_merge3 = clock();
+	cout<<"归并排序所用时间为"<<(clockEnd_merge3 - clockBegin_merge3)<<"ms"<<endl;
+
+	clock_t  clockBegin_insert3, clockEnd_insert3;
+	clockBegin_insert3 = clock();
+	InsertionSort(h2, HUGE);
+	clockEnd_insert3 = clock();
+	cout<<"插入排序所用时间为"<<(clockEnd_insert3 - clockBegin_insert3)<<"ms"<<endl;
+
+	clock_t  clockBegin_shell3, clockEnd_shell3;
+	clockBegin_shell3 = clock();
+	ShellSort(h3, HUGE);
+	clockEnd_shell3 = clock();
+	cout<<"希尔排序所用时间为"<<(clockEnd_shell3 - clockBegin_shell3)<<"ms"<<endl;
+
+	clock_t  clockBegin_quick3, clockEnd_quick3;
+	clockBegin_quick3 = clock();
+	QuickSort(h4, 0, HUGE-1);
+	clockEnd_quick3 = clock();
+	cout<<"快速排序所用时间为"<<(clockEnd_quick3 - clockBegin_quick3)<<"ms"<<endl;
+
+	clock_t  clockBegin_bubble3, clockEnd_bubble3;
+	clockBegin_bubble3 = clock();
+	BubbleSort(h5, HUGE);
+	clockEnd_bubble3 = clock();
+	cout<<"冒泡排序所用时间为"<<(clockEnd_bubble3 - clockBegin_bubble3)<<"ms"<<endl;
+
+	clock_t  clockBegin_bucket3, clockEnd_bucket3;
+	clockBegin_bucket3 = clock();
+	BucketSort(h6, HUGE);
+	clockEnd_bucket3 = clock();
+	cout<<"桶排序所用时间为"<<(clockEnd_bucket3 - clockBegin_bucket3)<<"ms"<<endl;
+
 	
 
 	delete []small_rand;
